@@ -17,10 +17,11 @@ html {
 }
 
 #wrapper {
-  width: 216px;
-  height: 320px;
-  background-color: #4a4a4a;
+  width: 220px;
+  height: 324px;
+  background-color: grey;
   margin: 0 auto;
+  border: 2px solid #000;
 }
 
 .row {
@@ -33,17 +34,11 @@ html {
 #display {
   width: 206px;
   height: 50px;
-  background-color: green;
+  background-color: #15ba97;
   text-align: right;
   border: 1px solid #000;
   margin: 0 auto;
   margin-top: 5px;
-}
-
-#display p {
-  width: 100%;
-  height: 100%;
-  margin: 0;
   line-height: 50px;
   color: #fff;
   padding-right: 5px;
@@ -81,4 +76,8 @@ html {
 
 #clear p {
   color: red;
+}
+
+.press {
+  background-color: #4a4a4a;
 }
