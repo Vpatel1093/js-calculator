@@ -25,8 +25,6 @@ function allowDecimal(currentNumber) {
 };
 
 function add(operand1, operand2) {
-  console.log(operand1);
-  console.log(operand2);
   return parsed(operand1) + parsed(operand2);
 };
 
@@ -54,22 +52,22 @@ function calculate(operand1, operand2, operator) {
   switch(operator) {
     case '+':
       currentNumber = add(operand1, operand2).toString();
-      operand1 = currentNumber;
+      lastOperand2 = operand2;
       operand2 = '';
       break;
     case '-':
       currentNumber = subtract(operand1, operand2).toString();
-      operand1 = currentNumber;
+      lastOperand2 = operand2;
       operand2 = '';
       break;
     case '/':
       currentNumber = divide(operand1, operand2).toString();
-      operand1 = currentNumber;
+      lastOperand2 = operand2;
       operand2 = '';
       break;
     case '*':
       currentNumber = multiply(operand1, operand2).toString();
-      operand1 = currentNumber;
+      lastOperand2 = operand2;
       operand2 = '';
       break;
   };
@@ -81,6 +79,7 @@ var operand2 = '';
 var displayText = $('#display');
 var currentNumber = '';
 var lastKeyPressed = '';
+var lastOperand2 = '';
 
 function calculator() {
   $('.button').on('mousedown touchstart', function pressKey() {
@@ -112,25 +111,25 @@ function calculator() {
           };
           break;
         case '+':
-          operand1 = (currentNumber !== null) ? currentNumber : 0;
+          operand1 = displayText.text();
           operator = keyPressed;
           currentNumber = '';
           displayText.text(operator);
           break;
         case '-':
-          operand1 = (currentNumber !== null) ? currentNumber : 0;
+          operand1 = displayText.text();
           operator = keyPressed;
           currentNumber = '';
           displayText.text(operator);
           break;
         case '/':
-          operand1 = (currentNumber !== null) ? currentNumber : 0;
+          operand1 = displayText.text();
           operator = keyPressed;
           currentNumber = '';
           displayText.text(operator);
           break;
         case '*':
-          operand1 = (currentNumber !== null) ? currentNumber : 0;
+          operand1 = displayText.text();
           operator = keyPressed;
           currentNumber = '';
           displayText.text(operator);
@@ -145,12 +144,17 @@ function calculator() {
           keyPressed = '';
           break;
         case '=':
-          if (currentNumber !== null) {
+          if (operator && currentNumber) {
             operand2 = currentNumber;
           }
-          if (operand1 !== null && operand2 !== null && operator !== null) {
+          if (!operand2 && lastOperand2) {
+            operand2 = lastOperand2;
+          }
+          if (operand1 && operand2 && operator) {
             calculate(operand1, operand2, operator);
             displayText.text(currentNumber);
+            operand1 = currentNumber;
+            currentNumber = '';
           }
           break;
       };
