@@ -25,6 +25,8 @@ function allowDecimal(currentNumber) {
 };
 
 function add(operand1, operand2) {
+  console.log(operand1);
+  console.log(operand2);
   return parsed(operand1) + parsed(operand2);
 };
 
@@ -93,19 +95,14 @@ function calculator() {
     var keyPressed = $(this).text();
 
     if (isNumber(keyPressed) && !irrelevantZero(keyPressed, currentNumber)) {
-      // if (isOperator(lastKeyPressed)) {
-      //   operand2 = currentNumber;
-      //   currentNumber = '';
-      //   currentNumber += keyPressed;
-      // } else {
-        currentNumber += keyPressed;
-      // };
+      currentNumber += keyPressed;
       // Remove leading 0 if applicable
       currentNumber = removeLeadingZero(currentNumber);
       displayText.text(currentNumber);
     } else if (isOperator(lastKeyPressed) && isOperator(keyPressed)) {
       // Replace current operator if existing
       operator = keyPressed;
+      displayText = displayText.text(operator);
     } else {
       switch(keyPressed) {
         case '.':
@@ -148,6 +145,9 @@ function calculator() {
           keyPressed = '';
           break;
         case '=':
+          if (currentNumber !== null) {
+            operand2 = currentNumber;
+          }
           if (operand1 !== null && operand2 !== null && operator !== null) {
             calculate(operand1, operand2, operator);
             displayText.text(currentNumber);
