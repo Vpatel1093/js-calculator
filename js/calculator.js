@@ -53,22 +53,18 @@ function calculate(operand1, operand2, operator) {
     case '+':
       currentNumber = add(operand1, operand2).toString();
       lastOperand2 = operand2;
-      operand2 = '';
       break;
     case '-':
       currentNumber = subtract(operand1, operand2).toString();
       lastOperand2 = operand2;
-      operand2 = '';
       break;
     case '/':
       currentNumber = divide(operand1, operand2).toString();
       lastOperand2 = operand2;
-      operand2 = '';
       break;
     case '*':
       currentNumber = multiply(operand1, operand2).toString();
       lastOperand2 = operand2;
-      operand2 = '';
       break;
   };
 };
@@ -77,6 +73,7 @@ var operand1 = '';
 var operator = '';
 var operand2 = '';
 var displayText = $('#display');
+var lastCalculationText = $('#last-calc');
 var currentNumber = '';
 var lastKeyPressed = '';
 var lastOperand2 = '';
@@ -139,6 +136,7 @@ function calculator() {
           operator = '';
           operand2 = '';
           displayText.text('0');
+          lastCalculationText.text('');
           currentNumber = '';
           lastKeyPressed = '';
           keyPressed = '';
@@ -153,7 +151,9 @@ function calculator() {
           if (operand1 && operand2 && operator) {
             calculate(operand1, operand2, operator);
             displayText.text(currentNumber);
+            lastCalculationText.text(operand1 + ' ' + operator + ' ' + operand2 + ' ' + '=');
             operand1 = currentNumber;
+            operand2 = '';
             currentNumber = '';
           }
           break;
