@@ -77,6 +77,7 @@ var lastCalculationText = $('#last-calc');
 var currentNumber = '';
 var lastKeyPressed = '';
 var lastOperand2 = '';
+var lastOperator = '';
 
 function calculator() {
   $('.button').on('mousedown touchstart', function pressKey() {
@@ -91,6 +92,7 @@ function calculator() {
     var keyPressed = $(this).text();
 
     if (isNumber(keyPressed) && !irrelevantZero(keyPressed, currentNumber)) {
+      if (lastKeyPressed === '=' && !operator) { operand1 = '' };
       currentNumber += keyPressed;
       // Remove leading 0 if applicable
       currentNumber = removeLeadingZero(currentNumber);
@@ -102,32 +104,29 @@ function calculator() {
     } else {
       switch(keyPressed) {
         case '.':
+          if (lastKeyPressed === '=' && !operator) { operand1 = '' };
           if (allowDecimal(currentNumber)) {
             currentNumber += keyPressed;
             displayText.text(currentNumber);
           };
           break;
         case '+':
-          operand1 = displayText.text();
-          operator = keyPressed;
-          currentNumber = '';
-          displayText.text(operator);
-          break;
         case '-':
-          operand1 = displayText.text();
-          operator = keyPressed;
-          currentNumber = '';
-          displayText.text(operator);
-          break;
         case '/':
-          operand1 = displayText.text();
-          operator = keyPressed;
-          currentNumber = '';
-          displayText.text(operator);
-          break;
         case '*':
-          operand1 = displayText.text();
-          operator = keyPressed;
+          if (!operand1) {
+            operand1 = displayText.text();
+            operator = keyPressed;
+          } else if (operand1 && operator) {
+            operand2 = displayText.text();
+            calculate(operand1, operand2, operator)
+            lastCalculationText.text(operand1 + ' ' + operator + ' ' + operand2 + ' ' + '=' + ' ' + currentNumber);
+            operand1 = currentNumber;
+            operand2 = '';
+            operator = keyPressed;
+          } else if (operand1 && !operator) {
+            operator = keyPressed;
+          };
           currentNumber = '';
           displayText.text(operator);
           break;
@@ -140,6 +139,8 @@ function calculator() {
           currentNumber = '';
           lastKeyPressed = '';
           keyPressed = '';
+          lastOperand2 = '';
+          lastOperator = '';
           break;
         case '=':
           if (operator && currentNumber) {
@@ -147,14 +148,17 @@ function calculator() {
           }
           if (!operand2 && lastOperand2) {
             operand2 = lastOperand2;
+            operator = lastOperator
           }
           if (operand1 && operand2 && operator) {
             calculate(operand1, operand2, operator);
             displayText.text(currentNumber);
-            lastCalculationText.text(operand1 + ' ' + operator + ' ' + operand2 + ' ' + '=');
+            lastCalculationText.text(operand1 + ' ' + operator + ' ' + operand2 + ' ' + '=' + ' ' + currentNumber);
             operand1 = currentNumber;
+            lastOperator = operator;
             operand2 = '';
             currentNumber = '';
+            operator = '';
           }
           break;
       };

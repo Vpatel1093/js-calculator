@@ -18,7 +18,7 @@ html {
 
 #wrapper {
   width: 220px;
-  height: 324px;
+  height: 327px;
   background-color: grey;
   margin: 0 auto;
   border: 2px solid #000;
@@ -33,6 +33,7 @@ html {
 
 .row:first-child {
   margin-top: 5px;
+  margin-bottom: 5px;
 }
 
 #display-screen {
@@ -79,6 +80,15 @@ html {
   display: inline-block;
   margin-left: 1px;
   margin-right: 1px;
+}
+
+#last-calc, #display, .button {
+  -webkit-touch-callout: none; /* iOS Safari */
+    -webkit-user-select: none; /* Safari */
+     -khtml-user-select: none; /* Konqueror HTML */
+       -moz-user-select: none; /* Firefox */
+        -ms-user-select: none; /* Internet Explorer/Edge */
+            user-select: none;
 }
 
 .row .button:first-child, .row .empty:first-child {
