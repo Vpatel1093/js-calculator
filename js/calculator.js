@@ -24,14 +24,63 @@ function allowDecimal(currentNumber) {
   return match === null;
 };
 
-function calculator() {
-  var operand1 = '';
-  var operator = '';
-  var operand2 = '';
-  var displayText = $('#display');
-  var currentNumber = '';
-  var lastKeyPressed = '';
+function add(operand1, operand2) {
+  return parsed(operand1) + parsed(operand2);
+};
 
+function subtract(operand1, operand2) {
+  return parsed(operand1) - parsed(operand2);
+};
+
+function multiply(operand1, operand2) {
+  return parsed(operand1) * parsed(operand2);
+};
+
+function divide(operand1, operand2) {
+  return parsed(operand1) / parsed(operand2);
+};
+
+function parsed(string) {
+  if (string.indexOf('.') >= 0) {
+      return parseFloat(string);
+  } else {
+      return parseInt(string,10);
+  }
+};
+
+function calculate(operand1, operand2, operator) {
+  switch(operator) {
+    case '+':
+      currentNumber = add(operand1, operand2).toString();
+      operand1 = currentNumber;
+      operand2 = '';
+      break;
+    case '-':
+      currentNumber = subtract(operand1, operand2).toString();
+      operand1 = currentNumber;
+      operand2 = '';
+      break;
+    case '/':
+      currentNumber = divide(operand1, operand2).toString();
+      operand1 = currentNumber;
+      operand2 = '';
+      break;
+    case '*':
+      currentNumber = multiply(operand1, operand2).toString();
+      operand1 = currentNumber;
+      operand2 = '';
+      break;
+  };
+};
+
+var operand1 = '';
+var operator = '';
+var operand2 = '';
+var displayText = $('#display');
+var currentNumber = '';
+var lastKeyPressed = '';
+
+function calculator() {
   $('.button').on('mousedown touchstart', function pressKey() {
     $(this).toggleClass('press');
   });
@@ -44,7 +93,13 @@ function calculator() {
     var keyPressed = $(this).text();
 
     if (isNumber(keyPressed) && !irrelevantZero(keyPressed, currentNumber)) {
-      currentNumber += keyPressed;
+      // if (isOperator(lastKeyPressed)) {
+      //   operand2 = currentNumber;
+      //   currentNumber = '';
+      //   currentNumber += keyPressed;
+      // } else {
+        currentNumber += keyPressed;
+      // };
       // Remove leading 0 if applicable
       currentNumber = removeLeadingZero(currentNumber);
       displayText.text(currentNumber);
@@ -62,21 +117,25 @@ function calculator() {
         case '+':
           operand1 = (currentNumber !== null) ? currentNumber : 0;
           operator = keyPressed;
+          currentNumber = '';
           displayText.text(operator);
           break;
         case '-':
           operand1 = (currentNumber !== null) ? currentNumber : 0;
           operator = keyPressed;
+          currentNumber = '';
           displayText.text(operator);
           break;
         case '/':
           operand1 = (currentNumber !== null) ? currentNumber : 0;
           operator = keyPressed;
+          currentNumber = '';
           displayText.text(operator);
           break;
         case '*':
           operand1 = (currentNumber !== null) ? currentNumber : 0;
           operator = keyPressed;
+          currentNumber = '';
           displayText.text(operator);
           break;
         case 'C':
@@ -86,6 +145,13 @@ function calculator() {
           displayText.text('0');
           currentNumber = '';
           lastKeyPressed = '';
+          keyPressed = '';
+          break;
+        case '=':
+          if (operand1 !== null && operand2 !== null && operator !== null) {
+            calculate(operand1, operand2, operator);
+            displayText.text(currentNumber);
+          }
           break;
       };
     };
